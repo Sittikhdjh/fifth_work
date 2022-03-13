@@ -1,0 +1,79 @@
+---
+title: "summary and plot for summary statistics for R language and data analysis"
+output: html_notebook
+---
+
+##Problem 1--------------------------------------------------------------
+```{r}
+if (!require("tidyverse")) {
+  install.packages("tidyverse")
+  library(tidyverse)
+}
+if (!require("titanic")) {
+  install.packages("titanic")
+  library(titanic)
+}
+```
+```{r}
+tdf <- titanic_train #training set of Titanic data
+```
+```{r}
+rec<-table(tdf$Sex, tdf$Survived)
+addmargins(prop.table(rec))
+```
+
+##Problem 2--------------------------------------------------------------
+```{r}
+if (!require("ggplot2")) {
+  install.packages("ggplot2")
+  library(ggplot2)
+}
+if (!require("stats")) {
+  install.packages("stats")
+  library(stats)
+}
+edf <- data.frame(economics)
+```
+```{r}
+#Take a quick peek at both vectors
+X<-edf$pce
+Y<-edf$psavert
+```
+```{r}
+#Save the differences of each vector element with the mean in a new variable
+diff_X<-X-mean(X)
+diff_Y<-Y-mean(Y)
+```
+```{r}
+#Do the summation of the vectors and divide by N-1 in order to acquire the covariance between the two vectors
+cov<-sum(diff_X*diff_Y)/(length(X)-1)
+cov
+```
+```{r}
+#Square the differences that were found in the previous step
+sq_diff_X<-diff_X^2
+sq_diff_Y<-diff_Y^2
+```
+```{r}
+#Take the sum of the elements, devide them by N-1 and consequently take the square root to acquire the sample standard deviation
+sd_X<-sqrt(sum(sq_diff_X)/(length(X)-1))
+sd_Y<-sqrt(sum(sq_diff_Y)/(length(Y)-1)) 
+sd_X
+```
+```{r}
+#Combine all the pieces of the puzzle
+corVal_manually<-cov/(sd_X*sd_Y)
+corVal_manually
+```
+```{r}
+corVal_stats<-cor(edf$pce,edf$psavert)
+corVal_stats
+```
+```{r}
+ggplot(edf, aes(pce, psavert)) +
+  geom_line()
+```
+```{r}
+corVal <- cor(edf$pce, edf$psavert)
+corVal
+```
